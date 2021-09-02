@@ -6,7 +6,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 class Proto(Protocol):
-    val: Any
+    val: int
 
 
 @dataclass
@@ -16,7 +16,12 @@ class ImplementedProtoDataclass:
 
 class ImplementedProto:
     def __init__(self, protonr: int):
-        self.val = str(protonr)
+        self.val = protonr
+
+
+@dataclass
+class FailedImplement:
+    value: int
 
 
 def proto_runner(_protos: Sequence[Proto]) -> None:
@@ -25,6 +30,11 @@ def proto_runner(_protos: Sequence[Proto]) -> None:
 
 
 if __name__ == "__main__":
-    protos = [ImplementedProtoDataclass(4)]
-
+    protos: list[Proto] = [ImplementedProtoDataclass(4)]
     proto_runner(protos)
+
+    new_protos: list[Proto] = [
+        ImplementedProtoDataclass(2),
+        FailedImplement(2),
+    ]  # this should fail. Last item does not comply with the Protocol.
+    proto_runner(new_protos)

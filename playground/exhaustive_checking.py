@@ -1,10 +1,8 @@
+#  https://hakibenita.com/python-mypy-exhaustive-checking
 from __future__ import annotations
 
 from typing import NoReturn
 import enum
-
-
-#  https://hakibenita.com/python-mypy-exhaustive-checking
 
 
 def assert_never(value: NoReturn) -> NoReturn:
@@ -13,7 +11,7 @@ def assert_never(value: NoReturn) -> NoReturn:
 
 class OrderStatus(enum.Enum):
     Ready = "ready"
-    Scheduled = "scheduled"
+    # Scheduled = "scheduled" # check or uncheck this item to see mypy in action (failing at the assert_never function)
     Shipped = "shipped"
 
 
