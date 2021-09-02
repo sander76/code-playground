@@ -14,7 +14,7 @@ def add_doc(doc_string: str) -> Callable[..., Any]:
     return _dec
 
 
-def a_decorator(func) -> Callable[..., Any]:
+def a_decorator(func: Callable[..., str]) -> Callable[..., str]:
     def _wrapper(*args, **kwargs):
         value = func()
         return f"a_value {value}"
@@ -27,8 +27,13 @@ def go():
     return "wrapped value"
 
 
+@a_decorator
+def go_forth():
+    print("Yes")
+
+
 @add_doc("This is the doc")
-def do_with_args(val: int, go: str = "yes"):
+def do_with_args(val: int, go: str = "yes") -> None:
     print(val, go)
 
 

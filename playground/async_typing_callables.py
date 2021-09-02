@@ -12,11 +12,11 @@ https://github.com/python/typing/issues/424
 from typing import Callable, Sequence, Collection, Tuple, Any, Awaitable
 
 
-async def an_async_function(arg1: str):
+async def an_async_function(arg1: str) -> None:
     print(arg1)
 
 
-def non_async(args1: str):
+def non_async(args1: str) -> None:
     print(args1)
 
 
@@ -34,13 +34,15 @@ def function_with_awaitable(awaitable: Awaitable) -> Awaitable:
     return awaitable
 
 
-function_with_awaitable(an_async_function("hello"))  # this willl work.
+function_with_awaitable(an_async_function("hello"))  # this will work.
 function_with_awaitable(an_async_function)  # this will give a typing error.
 function_with_awaitable(non_async("hello"))  # this will give a typing error.
 
 
 # Function expecting multiple callable coroutines.
-def function_with_multiple_coroutines(*async_function: Callable[..., Awaitable]):
+def function_with_multiple_coroutines(
+    *async_function: Callable[..., Awaitable]
+) -> Sequence[Callable[..., Awaitable]]:
     return async_function
 
 
@@ -63,10 +65,12 @@ async def call_back_fail():
     return "call_back_fail"
 
 
-def main_function_expecting_callback(c_back: Callable[[object, str], Awaitable[str]]):
+def main_function_expecting_callback(
+    c_back: Callable[[object, str], Awaitable[str]]
+) -> None:
     """A function expecting a callback"""
     print(c_back)
 
 
 main_function_expecting_callback(call_back)
-main_function_expecting_callback(call_back_fail)  # this should fail. But does not.
+main_function_expecting_callback(call_back_fail)  # this should fail.
