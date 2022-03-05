@@ -40,11 +40,13 @@ class JustClass(Generic[T]):
         return self._val
 
 
+indirect = BaseClass[int](10)
 a = Class1("A value")
 b = Class2(10)
 c = Class3(True)
 d = Inherited("aa")
 e = JustClass("a string")
+
 
 reveal_type(a._value)
 reveal_type(b._value)
