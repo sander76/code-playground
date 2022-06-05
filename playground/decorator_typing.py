@@ -1,40 +1,29 @@
-import logging
-from typing import Any, Callable, TypeVar
+from __future__ import annotations
+from typing import Any, Callable, Concatenate, TypeVar
+from typing_extensions import ParamSpec
 
-_LOGGER = logging.getLogger(__name__)
+# using paramspec
+# this works by default in python v3.10.
+# install typing-extensions if you're running a lower version.
 
-Wrapped = TypeVar("Wrapped")
-
-
-def add_doc(doc_string: str) -> Callable[..., Any]:
-    def _dec(func):
-        func.__doc__ = doc_string
-        return func
-
-    return _dec
+P = ParamSpec("P")
+R = TypeVar("R")
 
 
-def a_decorator(func: Callable[..., str]) -> Callable[..., str]:
-    def _wrapper(*args, **kwargs):
-        value = func()
-        return f"a_value {value}"
+def a_decorator(func: Callable[P, R]) -> Callable[P, R]:
+    async def _wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
+        print("wrapped")
+        return await func(*args, **kwargs)
 
     return _wrapper
 
 
 @a_decorator
-def go():
-    return "wrapped value"
+async def just_a_function(value1: int, value2: str) -> bool:
+    print(f"{value1}-{value2}")
+    return True
 
 
-@a_decorator
-def go_forth():
-    print("Yes")
+import asyncio
 
-
-@add_doc("This is the doc")
-def do_with_args(val: int, go: str = "yes") -> None:
-    print(val, go)
-
-
-print(go())
+asyncio.run(just_a_function(10, "10"))

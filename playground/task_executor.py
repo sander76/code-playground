@@ -8,6 +8,8 @@ charts = {}
 
 
 def measure(func):
+    """A util function to help measure the called coroutines."""
+
     async def wrapper(*args, **kwargs):
         start = time()
         await func(*args, **kwargs)
@@ -52,24 +54,22 @@ class Tasks:
 @measure
 async def func1():
     await asyncio.sleep(1)
-    print("func1")
-    return "func1"
+    print(result := "func1")
+    return result
 
 
 @measure
 async def func2(data):
     await asyncio.sleep(1)
-    new_data = f"{data} + func2"
-    print(new_data)
-    return new_data
+    print(result := f"{data} + func2")
+    return result
 
 
 @measure
 async def func3(data, data1):
     await asyncio.sleep(1)
-    new_data = f"{data} + {data1} + func3"
-    print(new_data)
-    return new_data
+    print(result := f"{data} + {data1} + func3")
+    return result
 
 
 @measure
