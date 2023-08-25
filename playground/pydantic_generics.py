@@ -31,7 +31,6 @@ class Parameters(BaseParameters):
 
 
 class GidcJob(Base[Response, Parameters]):
-
     resp: str = ""
 
 

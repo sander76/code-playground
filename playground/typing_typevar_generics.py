@@ -14,6 +14,9 @@ class BaseClass(Generic[T]):
     def __init__(self, value: T):
         self._value = value
 
+    def go(self) -> T:
+        return 1
+
 
 class Class1(BaseClass[str]):
     """A class 1"""
@@ -41,6 +44,12 @@ class JustClass(Generic[T]):
 
 
 indirect = BaseClass[int](10)
+indirect.go()
+
+another = BaseClass[str]("10")
+another.go()
+
+
 a = Class1("A value")
 b = Class2(10)
 c = Class3(True)

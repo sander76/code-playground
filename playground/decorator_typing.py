@@ -1,16 +1,11 @@
-from __future__ import annotations
-from typing import Any, Callable, Concatenate, TypeVar
-from typing_extensions import ParamSpec
-
-# using paramspec
-# this works by default in python v3.10.
-# install typing-extensions if you're running a lower version.
+from typing import Awaitable, Callable, ParamSpec, TypeVar
+import asyncio
 
 P = ParamSpec("P")
 R = TypeVar("R")
 
 
-def a_decorator(func: Callable[P, R]) -> Callable[P, R]:
+def a_decorator(func: Callable[P, Awaitable[R]]) -> Callable[P, Awaitable[R]]:
     async def _wrapper(*args: P.args, **kwargs: P.kwargs) -> R:
         print("wrapped")
         return await func(*args, **kwargs)
@@ -19,11 +14,18 @@ def a_decorator(func: Callable[P, R]) -> Callable[P, R]:
 
 
 @a_decorator
-async def just_a_function(value1: int, value2: str) -> bool:
-    print(f"{value1}-{value2}")
-    return True
+async def just_a_function(value1: int) -> bool:
+    print(value1)
+    return isinstance(value1, int)
 
 
-import asyncio
+async def go(value1: int) -> bool:
+    return await just_a_function(value1)
 
-asyncio.run(just_a_function(10, "10"))
+
+# mypy raises an error here:
+# Argument 1 to "run" has incompatible type "Awaitable[bool]"; expected "Coroutine[Any, Any, <nothing>]"  [arg-type]mypy
+asyncio.run(just_a_function(10))
+
+
+asyncio.run(go(10))

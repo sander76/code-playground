@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.9 (code-playground)" project-jdk-type="Python SDK" />
-  <component name="PylintConfigService">
-    <option name="customPylintPath" value="C:\Users\sander\.local\bin\pylint.exe" />
-  </component>
-</project>

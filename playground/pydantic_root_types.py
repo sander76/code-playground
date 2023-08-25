@@ -1,5 +1,21 @@
-from typing import List
-from pydantic import BaseSettings
+from typing import List, Sequence, TypeVar
+from pydantic import BaseModel, BaseSettings
+
+
+class UP(BaseModel):
+    ...
+
+
+class MUP(UP):
+    ...
+
+
+class EC(BaseModel):
+    up: Sequence[UP]
+
+
+class MEP(EC):
+    up: Sequence[BaseModel]
 
 
 class Item(BaseSettings):

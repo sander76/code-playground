@@ -50,6 +50,6 @@ class Employee:
     def calculate_payroll(self):
         return self._payroll.calculate_payroll()
 
-    def apply_payroll_policy(self,new_policy):
+    def apply_payroll_policy(self, new_policy):
         new_policy.apply_to_policy(self._payroll)
-        self._payroll=new_policy
+        self._payroll = new_policy

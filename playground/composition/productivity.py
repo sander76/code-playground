@@ -26,8 +26,6 @@ class _ProductivitySystem:
         print("")
 
 
-
-
 def get_role(role_id):
     return _productivity_system.get_role(role_id)
 
@@ -54,5 +52,6 @@ class SalesRole:
 class FactoryRole:
     def perform_duties(self, hours):
         return f"manufactures gadgets for {hours} hours."
+
 
 _productivity_system = _ProductivitySystem()
