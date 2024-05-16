@@ -6,3 +6,4 @@ typing-extensions
 rich
 black
 mypy
+tyro

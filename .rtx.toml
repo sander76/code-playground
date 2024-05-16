@@ -1,5 +1,0 @@
-[tools]
-python = {version='3.11', virtualenv='venv'}
-
-[env]
-ALL_PROXY = "http://localhost:1316"

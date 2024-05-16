@@ -1,0 +1,13 @@
+{
+    "properties": {
+        "pet_type": {
+            "const": "dog",
+            "title": "Pet Type"
+        }
+    },
+    "required": [
+        "pet_type"
+    ],
+    "title": "Dog",
+    "type": "object"
+}

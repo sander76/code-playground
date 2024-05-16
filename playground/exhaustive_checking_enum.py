@@ -1,17 +1,14 @@
-#  https://hakibenita.com/python-mypy-exhaustive-checking
+# enum check all types
 from __future__ import annotations
 
-from typing import NoReturn
 import enum
 
-
-def assert_never(value: NoReturn) -> NoReturn:
-    assert False, f"Unhandled value: {value} ({type(value).__name__})"
+from typing_extensions import assert_never
 
 
 class OrderStatus(enum.Enum):
     Ready = "ready"
-    # Scheduled = "scheduled" # check or uncheck this item to see mypy in action (failing at the assert_never function)
+    Scheduled = "scheduled"  # check or uncheck this item to see mypy in action (failing at the assert_never function)
     Shipped = "shipped"
 
 
@@ -21,12 +18,12 @@ def handle_order(status: OrderStatus) -> str:
     #  Only two out of three enums are evaluated. Scheduled is missing.
     #  Mypy indicates an error in the `assert_never` function.
 
-    if status is OrderStatus.Ready:
+    if status == OrderStatus.Ready:
         return "ship order"
 
-    elif status is OrderStatus.Shipped:
+    if status == OrderStatus.Shipped:
         return "shipped"
-    # elif status is OrderStatus.Scheduled:
-    #     return "ready"
-    else:
-        assert_never(status)
+    assert_never(status)
+
+
+handle_order()
