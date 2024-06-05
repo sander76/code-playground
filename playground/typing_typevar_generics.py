@@ -5,7 +5,7 @@ This init parameter is typed according to the overriding class.
 Also have a look here: https://stackoverflow.com/questions/64873588/typevbar-in-class-init-type-hinting#64874113
 """
 
-from typing import TypeVar, Generic
+from typing import Generic, TypeVar
 
 T = TypeVar("T")
 

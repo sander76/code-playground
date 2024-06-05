@@ -1,9 +1,3 @@
-mypy
+bleak
+
 pydantic
-pyfailsafe
-tenacity
-typing-extensions
-rich
-black
-mypy
-tyro

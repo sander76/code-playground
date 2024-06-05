@@ -1,23 +1,52 @@
 import pickle
 
 
-class Other:
-    def __init__(self, *args) -> None:
-        self.args = args
+class CorrectError(Exception):
+    def __init__(self, message: str, context: dict) -> None:
+        self.context = context
+        super().__init__(message, context)
 
 
-class GdssError(Exception):
-    """Raise an error when a Gdss request did not succeed."""
+class IncorrectError(Exception):
+    def __init__(self, message: str, context: dict) -> None:
+        super().__init__(message)  # notice the absence of the context dict.
+        self.context = context
 
-    def __init__(self, message: str, structlog_context: dict) -> None:
-        super().__init__(message)
-        self.structlog_context = structlog_context
+    def __str__(self):
+        return f"incorrect error with message {self!r} and {self.context}"
 
 
-exc = GdssError("I am an error", {"foo": "bar"})
+class CapturingError(Exception): ...
 
-pickled = pickle.dumps(exc)
-unpickled = pickle.loads(pickled)
-unpickled = pickle.loads(pickle.dumps(exc))
 
-print(unpickled.structlog_context)
+context_dict = {"my_key": "my_value"}
+
+_incorrect = IncorrectError("mymessage", context=context_dict)
+_correct = CorrectError("mymessage", context=context_dict)
+
+
+def go():
+    try:
+        raise IncorrectError("some stuff", context={"mycontext": 10})
+    except Exception as err:
+        _captured = CapturingError(str(err))
+        raise _captured
+
+
+def pickle_depickle(exception):
+    _pickled = pickle.dumps(exception)
+    _de_pickled = pickle.loads(_pickled)
+    return _de_pickled
+
+
+print("\n\npickling correct exception.")
+print(pickle_depickle(_correct))
+
+try:
+    go()
+except CapturingError as err:
+    print("\n\npickling _capturing exception.")
+    print(pickle_depickle(err))
+
+# print("\n\npickling incorrect exception.")
+# print(pickle_depickle(_incorrect))

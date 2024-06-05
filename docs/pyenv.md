@@ -6,3 +6,4 @@
 
 `pyenv global 3.10.5` : Set the global python version
 
+`pyenv local 3.7.0 2.7.15` : Set multiple local python versions.
