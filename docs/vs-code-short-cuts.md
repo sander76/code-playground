@@ -12,3 +12,9 @@ ctrl-numpad 2 increase editor height
 
 crtl-w close window 
 
+crtl-k s save all
+
+ctrl-m ctrl . move editor into right group
+ctrl-m ctrl , move editor into left group
+
+ctrl-tab cycle open views.
