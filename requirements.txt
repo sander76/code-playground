@@ -1,3 +1,5 @@
 bleak
 
 pydantic
+mypy
+ruff

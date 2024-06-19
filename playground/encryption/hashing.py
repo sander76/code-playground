@@ -1,3 +1,8 @@
+"""For more info see:
+
+https://cryptobook.nakov.com/
+"""
+
 from Crypto.Hash import SHA3_256
 
 ################ HASHING
