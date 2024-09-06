@@ -1,25 +1,14 @@
-from typing import TypeAlias, NewType
+from typing import NewType, TypeAlias
 from uuid import UUID, uuid4
 
-# speed = NewType("speed", int)
-# duration = NewType("duration", int)
+speed = NewType("speed", int)
+duration = NewType("duration", int)
 
 
-# def return_two_ints() -> tuple[speed, duration]:
-#     return (1, 2)
+def return_two_ints() -> tuple[speed, duration]:
+    return (speed(1), duration(2))
 
 
-# def make_it_happend() -> tuple[speed, duration]:
-#     speed, duration = return_two_ints()
-#     return duration, speed
-
-
-a = set[str | UUID]
-
-
-def go(values: a) -> None:
-    pass
-
-
-go({uuid4(), "abc"})
-go({"abc"})
+def make_it_happend() -> tuple[speed, duration]:
+    speed, duration = return_two_ints()
+    return speed, duration

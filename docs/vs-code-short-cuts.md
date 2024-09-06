@@ -17,4 +17,9 @@ crtl-k s save all
 ctrl-m ctrl . move editor into right group
 ctrl-m ctrl , move editor into left group
 
+`ctrl-alt .` focus next editor group
+`ctrl-alt ,` focus previous editor group
+
 ctrl-tab cycle open views.
+
+

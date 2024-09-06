@@ -3,3 +3,6 @@ bleak
 pydantic
 mypy
 ruff
+tyro
+
+numpy
