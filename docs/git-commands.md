@@ -17,3 +17,35 @@ git commit -m "<Message>"
 ```
 
 more info: https://www.baeldung.com/ops/git-remove-tracked-files-gitignore
+
+
+## change parent branch
+
+```
+git rebase --onto master feature-branch
+                     |       |
+                     |        --> old-parent
+                     --> new-parent
+```
+
+from:
+
+```
+A---B---C---D  master
+            \
+              E---F---G  feature-branch
+                      \
+                        H---I---J current-feature-branch (HEAD)
+```
+
+to:
+
+```
+A---B---C---D  master
+            |\
+            | E---F---G  feature-branch
+            |
+             \
+              H'---I'---J' current-feature-branch (HEAD)
+```
+

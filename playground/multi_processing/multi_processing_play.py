@@ -1,5 +1,6 @@
 import concurrent
 import concurrent.futures
+import multiprocessing
 import time
 
 from pydantic import BaseModel
@@ -28,7 +29,9 @@ def a_raising_job():
 def run_processes():
     jobs = [a_job, a_job, a_raising_job]
     t0 = time.monotonic()
-    with concurrent.futures.ProcessPoolExecutor() as executor:
+    with concurrent.futures.ProcessPoolExecutor(
+        mp_context=multiprocessing.get_context("spawn")
+    ) as executor:
         results = [executor.submit(job, delay=1) for job in jobs]
 
     print(f"duration {time.monotonic()-t0}")
@@ -36,4 +39,10 @@ def run_processes():
         print(result)
 
 
-run_processes()
+class SomeShit:
+    def go(self):
+        run_processes()
+
+
+def do_shit():
+    print("some shit")
