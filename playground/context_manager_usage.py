@@ -10,9 +10,9 @@ def as_decorator() -> Generator[int, None, None]:
     return result * 2
 
 
-@as_decorator()
 def multi(val: int) -> int:
-    return val
+    with as_decorator():
+        return val
 
 
 if __name__ == "__main__":

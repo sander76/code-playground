@@ -49,3 +49,9 @@ A---B---C---D  master
               H'---I'---J' current-feature-branch (HEAD)
 ```
 
+
+## show change history of a file.
+
+`git log --follow --patch -- name-of-file`
+
+The --patch/-p flag generates patch text, i.e. diffs of the file across commits. The --follow flag will include changes across renames in our change log. Note that --follow will only work if we’re looking at a single file – we should remove this flag if we’re viewing the history of multiple files, or want to exclude history past the file’s most recent renaming.

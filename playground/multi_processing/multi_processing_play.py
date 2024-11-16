@@ -6,20 +6,11 @@ import time
 from pydantic import BaseModel
 
 
-class MySettings(BaseModel):
-    delay: int
-
-
-settings = MySettings(delay=3)
-
-
-def a_job(delay: int | None = None):
-    if delay is None:
-        delay = settings.delay
-
+def a_job(delay: int):
     print(f"delaying {delay} seconds")
     time.sleep(delay)
-    return 5
+    print(f"finished on delay {delay}")
+    return delay
 
 
 def a_raising_job():
@@ -27,22 +18,20 @@ def a_raising_job():
 
 
 def run_processes():
-    jobs = [a_job, a_job, a_raising_job]
-    t0 = time.monotonic()
-    with concurrent.futures.ProcessPoolExecutor(
-        mp_context=multiprocessing.get_context("spawn")
-    ) as executor:
-        results = [executor.submit(job, delay=1) for job in jobs]
+    with concurrent.futures.ProcessPoolExecutor() as executor:
+        results = [executor.submit(a_job, delay=8), executor.submit(a_job, delay=1)]
 
-    print(f"duration {time.monotonic()-t0}")
     for result in results:
-        print(result)
+        print(result.result())
 
 
-class SomeShit:
-    def go(self):
-        run_processes()
+# class SomeShit:
+#     def go(self):
+#         run_processes()
 
 
-def do_shit():
-    print("some shit")
+# def do_shit():
+#     print("some shit")
+
+if __name__ == "__main__":
+    run_processes()

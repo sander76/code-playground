@@ -1,4 +1,0 @@
-[lint]
-select = [
-    "F","I","D","E","RSE"
-]
