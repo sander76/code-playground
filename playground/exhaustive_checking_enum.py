@@ -26,4 +26,14 @@ def handle_order(status: OrderStatus) -> str:
     assert_never(status)
 
 
+def handle(status: OrderStatus) -> str:
+    match status:
+        case OrderStatus.Ready:
+            return "ready"
+        case OrderStatus.Shipped:
+            return "shipped"
+        case _:
+            assert_never(status)  # this raises mypy issue
+
+
 handle_order()

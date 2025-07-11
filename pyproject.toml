@@ -22,13 +22,13 @@ docstring-code-format=true
 
 
 [tool.ruff.lint]
-extend-select=['D']
-ignore = [
-    "D100",  # missing docstring in public module
-    "D104",  # missing docstring in public package
-    "D105",  # missing docstring in magic method
-    "D107",  # missing docstring in __init__
-]
+# extend-select=['D']
+# ignore = [
+#     "D100",  # missing docstring in public module
+#     "D104",  # missing docstring in public package
+#     "D105",  # missing docstring in magic method
+#     "D107",  # missing docstring in __init__
+# ]
 
 [tool.ruff.lint.pydocstyle]
 convention="google"

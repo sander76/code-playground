@@ -3,18 +3,17 @@ from typing import Generator
 
 
 @contextmanager
-def as_decorator() -> Generator[int, None, None]:
-    result = yield
-    result = next(result)
+def as_decorator() -> Generator[None, None, None]:
+    print("start")
+    yield
+    print("end")
 
-    return result * 2
 
-
+@as_decorator()
 def multi(val: int) -> int:
-    with as_decorator():
-        return val
+    return 10 * 2
 
 
 if __name__ == "__main__":
-    result = multi(2)
+    result = multi(10)
     print(result)

@@ -1,85 +1,74 @@
-import contextlib
-import functools
 import logging
-from typing import Generator, Iterable
+from collections import defaultdict
 
-logging.basicConfig(level=logging.INFO)
-
-_logger = logging.getLogger(__name__)
+from pytest import LogCaptureFixture
 
 
 class LogCapFilter:
-    def __init__(self):
-        self.occurrences: dict[str, int] = {}
+    """Add this filter to a logger to filter messages.
 
-    def filter(self, record: logging.LogRecord):
+    Examples:
+        In a module which contains a logger you want to cap its output:
+        >>> _logger = logging.getLogger(__name__)
+        >>> _logger.addFilter(LogCapFilter())
+        >>> _logger.info("A capped log message", extra={"cap": LogCap("unique_id")})
+
+    """
+
+    def __init__(self) -> None:
+        self.occurrences: dict[str, int] = defaultdict(lambda: 0)
+
+    def filter(self, record: logging.LogRecord) -> bool:
         try:
-            cap: LogCap = record.cap
+            cap: LogCap = record.cap  # type: ignore
         except AttributeError:
+            # cap attribute found, so not doing any capping.
             return True
-        occurence = self.occurrences.setdefault(cap.cap_id, 0)
+
         self.occurrences[cap.cap_id] += 1
-        if occurence >= cap.limit:
+        if self.occurrences[cap.cap_id] > cap.limit:
             return False
-        record.msg = f"{record.msg} [MESSAGE LIMITED TO {cap.limit} OCCURRENCES]"
+
+        if self.occurrences[cap.cap_id] == cap.limit:
+            record.msg = f"{record.msg} [MESSAGE LIMITED TO {cap.limit} OCCURRENCES]"
         return True
 
 
-_logger.addFilter(LogCapFilter())
-
-
 class LogCap:
+    """Add this to the extra dict of your log message to limit the number of occurrences in the log output."""
+
     def __init__(self, log_id: str, limit: int = 3) -> None:
+        """Init.
+
+        Args:
+            log_id: An identifier for the LogCapFilter to count the number of occurrences of a message.
+            limit: Max amount of occurrences in the log output. Defaults to 3.
+        """
         self.limit = limit
         self.cap_id = log_id
 
 
-# def cap_logging(logger: logging.Logger):
-#     logcounter = LogCounter(logger.name)
-#     logger.addFilter(logcounter)
+def test_log_cap(caplog: LogCaptureFixture):
+    caplog.set_level(logging.INFO)
+    _logger = logging.getLogger("my test logger")
+    _logger.addFilter(LogCapFilter())
 
-#     def decorator(func):
-#         functools.wraps(func)
+    for _ in range(10):
+        _logger.info("this should occur only 4 times", extra={"cap": LogCap("log_id", limit=4)})
 
-#         def wrapper(*args, **kwargs):
-#             try:
-#                 return func(*args, **kwargs)
-#             finally:
-#                 if logcounter in logger.filters:
-#                     logger.filters.remove(logcounter)
-#                 fltrs = logger.filters
-
-#                 for message, count in logcounter.occurrences.items():
-#                     logger.info(f"{message} occurred {count} times")
-
-#         return wrapper
-
-#     return decorator
+    assert caplog.messages == [
+        "this should occur only 4 times",
+        "this should occur only 4 times",
+        "this should occur only 4 times",
+        "this should occur only 4 times [MESSAGE LIMITED TO 4 OCCURRENCES]",
+    ]
 
 
-# @contextlib.contextmanager
-# def cap_logging(logger: logging.Logger) -> Generator[None, None, None]:
-#     logcounter = LogCounter()
-#     logger.addFilter(logcounter)
-#     try:
-#         yield
-#     finally:
-#         logger.removeFilter(logcounter)
-#         for message, count in logcounter.occurrences.items():
-#             logger.info(f"{message} occurred {count} times")
+def test_no_logcap(caplog: LogCaptureFixture):
+    caplog.set_level(logging.INFO)
+    _logger = logging.getLogger("my test logger")
+    _logger.addFilter(LogCapFilter())
 
+    _logger.info("no logcap message")
 
-def log_list_tester() -> list[str]:
-    data = []
-    for i in range(10):
-        _logger.info("some list info", extra={"cap": LogCap(log_id="abc")})
-        data.append(f"list item {i}")
-    return data
-
-
-def go():
-    for item in log_list_tester():
-        print(item)
-
-
-go()
+    assert caplog.messages == ["no logcap message"]

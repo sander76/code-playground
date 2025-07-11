@@ -2,7 +2,18 @@ from collections.abc import Mapping, Sequence
 from typing import Iterable
 
 
-def walk_dict(obj, *path: str | int | None) -> Iterable[tuple[object, tuple[int | str, ...]]]:
+def walk_dict(obj, *path: str | int | None) -> Iterable[tuple[tuple[int | str, ...], object]]:
+    """Walk over all values of a dictionary.
+
+    Returns:
+        An iterable of keys value pairs. The keys value consists of a tuple of the full path of the keys
+        pointing to the value
+
+    >>> list(walk_dict({"a": 10}))
+    [(10, ('a',))]
+
+
+    """
     if path is None:
         path = tuple()
     if isinstance(obj, Mapping):

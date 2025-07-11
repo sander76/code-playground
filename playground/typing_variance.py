@@ -1,13 +1,13 @@
-from typing import Sequence
+from abc import ABCMeta
+from typing import Any, Sequence
+
 from pydantic import BaseModel
 
 
-class ItemA:
-    ...
+class ItemA: ...
 
 
-class ItemB(ItemA):
-    ...
+class ItemB(ItemA): ...
 
 
 class Items:

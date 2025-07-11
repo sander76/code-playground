@@ -26,3 +26,6 @@ def do_stuff(source: Iterable[int]) -> None:
 
 do_stuff(cls)
 do_stuff([1, 2, 3])
+
+do_stuff({1, 2, 3})
+do_stuff({1: 1}.keys())

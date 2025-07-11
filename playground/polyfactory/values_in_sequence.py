@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from enum import Enum
 
 from polyfactory.factories import DataclassFactory
 
@@ -27,5 +28,21 @@ def test_random_seed() -> None:
     print(factory)
 
 
+class BaseEnum(Enum): ...
+
+
+class OtherEnum(BaseEnum):
+    VALUE_1 = 1
+    VALUE_2 = 2
+
+
+@dataclass
+class MyModel:
+    values: dict[BaseEnum, int]
+
+
+class MyModelFactory(DataclassFactory[MyModel]): ...
+
+
 if __name__ == "__main__":
-    test_random_seed()
+    my_model = MyModelFactory.build()
