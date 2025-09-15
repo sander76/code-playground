@@ -1,6 +1,6 @@
 from argparse import ArgumentParser
 
-parser = ArgumentParser()
+parser = ArgumentParser(exit_on_error=False)
 parser.add_argument("value1")
 parser.add_argument("value2")
 parser.add_argument("--val3", default="abc")
