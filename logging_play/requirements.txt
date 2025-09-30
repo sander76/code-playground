@@ -1,0 +1,9 @@
+typer
+toml
+pyyaml
+python-json-logger
+structlog
+colorama
+rich
+python-json-logger
+loguru

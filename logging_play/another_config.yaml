@@ -1,0 +1,57 @@
+# A root logger is used to log to console, normal log file and a json log file for structured logging.
+# Higher level loggers are defined to set specific log levels that override the rool log level. The
+# higher level loggers don't log themselves they propagate to the rootlogger.
+
+version: 1
+disable_existing_loggers : 0
+formatters:
+  simple:
+    format: '%(asctime)s - %(levelname)-7s - %(name)s - %(message)s'
+  json:
+    format: "%(asctime)s %(name)s %(levelname)s %(message)s %(prod_id)s"
+    class: pythonjsonlogger.jsonlogger.JsonFormatter
+#  json_extra: "%(message)s %(asctime)s %(name)s %(levelname)s %(extra)s"
+#    format:
+filters:
+  add_an_id:
+    (): learning_logging.log_filter.add_id
+  add_id_js:
+    (): learning_logging.log_filter.add_id_js
+handlers:
+  console:
+    class: logging.StreamHandler
+    level: DEBUG
+    formatter: simple
+    stream: ext://sys.stdout
+  file_handler:
+    class : logging.handlers.RotatingFileHandler
+    formatter : simple
+    filename : c://temp//log_output.log
+    filters:
+      - add_an_id
+    mode : append
+    maxBytes : 400000
+    backupCount : 10
+  json_file_handler:
+    class: logging.handlers.RotatingFileHandler
+    formatter: json
+    filename: c://temp//log_output.js
+    filters:
+      - add_id_js
+    mode: append
+    maxBytes: 400000
+    backupCount: 10
+loggers:
+  learning_logging.a_package:
+    level: DEBUG
+    propagate: 1 # yes
+  learning_logging.another_package:
+    level: INFO
+    propagate: 1
+root:
+  level: DEBUG
+  formatter: simple
+  handlers:
+    - console
+#    - file_handler
+    - json_file_handler

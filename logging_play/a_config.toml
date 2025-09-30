@@ -1,0 +1,53 @@
+version = 1
+disable_existing_loggers = false
+
+[formatters.default]
+format = '"%(asctime)s - %(name)s - %(levelname)s - %(message)s"'
+
+[formatters.no_name_format]
+format = '"%(asctime)s - %(name)s %(levelname)s - %(message)s"'
+
+[handlers.file_handler]
+class = "logging.handlers.RotatingFileHandler"
+formatter = "default"
+level = "DEBUG"
+filename = "c://temp//log_output.log"
+mode = "append"
+maxBytes = 400000
+backupCount = 10
+
+[handlers.a_package_file_handler]
+class = "logging.handlers.RotatingFileHandler"
+formatter = "no_name_format"
+level = "DEBUG"
+filename = "c://temp//a_package_logfile.log"
+mode = "append"
+maxBytes = 400000
+backupCount = 10
+
+[handlers.console]
+class = "logging.StreamHandler"
+formatter = "default"
+level = "DEBUG"
+stream = "ext://sys.stdout"
+
+# this logger only logs data from 'learning_logging.a_package'
+# take not of the quotes around the full package
+# name. Otherwise the dot will be interpreted as
+# an extra key in the dictionary.
+[loggers."learning_logging.a_package"]
+level = "DEBUG"
+propagate = false
+handlers = ["a_package_file_handler"]
+
+# this logger catches any log message inside the 'another_package' module.
+# also sub-package modules.
+[loggers."learning_logging.another_package"]
+level = "INFO"
+propagate = false
+handlers = ["a_package_file_handler"]
+
+[root]
+level = "DEBUG"
+handlers = ["file_handler", "console"]
+
