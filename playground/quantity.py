@@ -13,7 +13,7 @@ class Reactr(Generic[ReactrType]):
     def __set_name__(self, owner: Any, name: str) -> None:
         self.name = name
 
-    def __get__(self, obj: ReactrType | None, type: type[ReactrType] | None = None) -> ReactrType:
+    def __get__(self, obj: object | None, owner: Any = None) -> ReactrType:
         if obj is None:
             raise ValueError("not possible")
 
@@ -27,15 +27,15 @@ class Reactr(Generic[ReactrType]):
 
 
 class MyObj:
-    my_q: int = Reactr(10)
+    my_q = Reactr(10)
 
     def __init__(self) -> None:
         self.my_q = 20
 
 
-# @dataclass
-# class OtherObj:
-#     my_q: int = field(default=Reactr(10))
+@dataclass
+class OtherObj:
+    my_q: Reactr[int] = field(default=Reactr(10))
 
 
 my_obj = MyObj()
@@ -44,7 +44,9 @@ val = my_obj.my_q
 print(val)
 
 print(my_obj.my_q)
-# other = OtherObj()
-# other_val = other.my_q
+
+
+other = OtherObj()
+other_val = other.my_q
 
 # print(other_val)
