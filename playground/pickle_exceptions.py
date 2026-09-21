@@ -1,9 +1,11 @@
+from typing import Any
 import pickle
 
 
 class CorrectError(Exception):
-    def __init__(self, message: str, context: dict) -> None:
+    def __init__(self, message: str, context: Any) -> None:
         self.context = context
+        self.message = message
         super().__init__(message, context)
 
 

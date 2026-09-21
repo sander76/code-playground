@@ -1,5 +1,5 @@
-import types
 from enum import Enum
+from typing import Literal
 
 
 class Empty(Enum):
@@ -15,6 +15,8 @@ class NOTHING:
 
 def func(value: int | None | Empty | type[NOTHING]):
     print("************************************")
+
+    print(f"You choose: {value}")
     if value is not NOTHING:
         print("abc")
     if value is NOTHING:

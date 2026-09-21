@@ -32,3 +32,8 @@ docstring-code-format=true
 
 [tool.ruff.lint.pydocstyle]
 convention="google"
+
+[dependency-groups]
+dev = [
+    "diskcache>=5.6.3",
+]

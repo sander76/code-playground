@@ -1,11 +1,15 @@
-class A:
-    def f(self, i: int) -> None:
+from abc import ABC, abstractmethod
+
+
+class A(ABC):
+    @abstractmethod
+    def f(self, i: int, *args, **kwargs) -> object:
         pass
 
 
 class B(A):
-    def f(self, i: int | None) -> None:
-        pass
+    def f(self, i: int | None) -> int:
+        return 1
 
 
 class C(A):
@@ -18,5 +22,21 @@ class D(A):
 
 
 class E(A):
-    def f(self, i: int | None = None) -> None:
-        super().f(1)
+    def f(self, i: int | None = None) -> str:
+        return "abc"
+
+
+class F(A): ...
+
+
+class G(A):
+    def f(self) -> None:
+        pass
+
+
+b = B()
+
+g = G()
+g.f()
+
+f = F()

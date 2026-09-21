@@ -1,0 +1,17 @@
+[shell_alias]
+nvim="~/.local/bin/maybe_nvim.sh"
+vi="~/.local/bin/maybe_nvim.sh"
+py="ptpython"
+
+[env]
+_.python.venv = { path = ".venv", create = true }
+
+[hooks]
+enter = "uv pip install pytest-pudb-resurrected ptpython"
+
+[tasks.bootstrap]
+description = "bootstrap this worktree"
+alias = "bs"
+run = [
+	'uv sync',
+]
